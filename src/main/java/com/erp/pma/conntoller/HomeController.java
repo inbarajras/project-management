@@ -24,7 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 public class HomeController {
 	
 	@Autowired
@@ -33,10 +33,10 @@ public class HomeController {
 	@Autowired
 	EmployeeRepository empRepo;
 	
-	@GetMapping("/dashboard")
+	@GetMapping
 	public String dashboard(Model model,@RequestParam(value="username",required = false)String username,@RequestParam(value="pass",required = false) String pass) throws JsonProcessingException {
-		if(Objects.nonNull(username)&&Objects.nonNull(pass)) {
-			if(pass.equals(username+"login")){
+//		if(Objects.nonNull(username)&&Objects.nonNull(pass)) {
+//			if(pass.equals(username+"login")){
 		List<Project>projects=projectRepo.findAll();
 		List<EmployeeProject>employeeProjectListCount=empRepo.getEmployeeProjectCnt();
 		List<ProjectStage> projectStatus = projectRepo.getProjectStageCount();
@@ -46,11 +46,11 @@ public class HomeController {
 		model.addAttribute("projects",projects);
 		model.addAttribute("employeeProjectList",employeeProjectListCount);
 		return "main/home.html";
-		}else {
-			return "redirect:/home/login";	
-		}}else {
-			return "redirect:/home/login";
-		}
+//		}else {
+//			return "redirect:/home/login";	
+//		}}else {
+//			return "redirect:/home/login";
+//		}
 	}
 	
 	@GetMapping("/login")
@@ -81,7 +81,7 @@ public class HomeController {
 	@PostMapping("/saveprj")
 	public String save(Project project,@RequestParam List<Long> employees) {
 		projectRepo.save(project);
-		return "redirect:/home/newprj";
+		return "redirect:/newprj";
 		
 	}
 
@@ -104,7 +104,7 @@ public class HomeController {
 	@PostMapping("/saveemp")
 	public String save(Employee employee) {
 		empRepo.save(employee);
-		return "redirect:/home/newemp";
+		return "redirect:/newemp";
 		
 	}
 	
